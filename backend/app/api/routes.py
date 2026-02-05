@@ -124,7 +124,7 @@ def get_report(username: str, snapshot: str = "latest"):
         if not snapshot_obj:
             raise HTTPException(status_code=404, detail="Snapshot not found")
 
-        cache_key = f\"{username}:{snapshot_obj.id}\"
+        cache_key = f"{username}:{snapshot_obj.id}"
         cached = cache.get_json(cache_key)
         if cached:
             return cached
