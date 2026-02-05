@@ -1,0 +1,95 @@
+:root {
+  --bg: #f7f4f0;
+  --fg: #1f1f1f;
+  --accent: #e85d04;
+  --muted: #6b6b6b;
+  --card: #ffffff;
+  --border: #e0d8cf;
+  font-family: "Georgia", "Times New Roman", serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: radial-gradient(circle at top, #fffaf2, #f7f4f0 70%);
+  color: var(--fg);
+}
+
+main {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 32px 20px 80px;
+}
+
+header {
+  margin-bottom: 24px;
+}
+
+h1 {
+  font-size: 32px;
+  margin: 0 0 8px;
+}
+
+p {
+  margin: 0 0 12px;
+  color: var(--muted);
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 16px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
+}
+
+input, button {
+  font-family: inherit;
+  font-size: 16px;
+}
+
+input {
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  width: 100%;
+  margin-bottom: 12px;
+}
+
+button {
+  background: var(--accent);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 14px;
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.grid {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.badge {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: #ffe8d6;
+  color: #8a2d0f;
+  font-size: 12px;
+}
