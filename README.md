@@ -2,7 +2,7 @@
 
 A web dashboard + backend that analyzes a single Reddit account’s public activity and returns an automation-likelihood score (0–100) with explainability and evidence links. Snapshot history is persisted for auditing and comparisons over time.
 
-Spec source of truth: `spec.md`.
+Spec source of truth: `docs/spec.md`.
 Invariants: `docs/INVARIANTS.md`.
 
 ## What This Includes
@@ -17,7 +17,7 @@ Invariants: `docs/INVARIANTS.md`.
 - `backend/` API, collectors, features, scoring, worker jobs, models.
 - `frontend/` Next.js UI.
 - `infra/` Docker Compose for Postgres + Redis.
-- `spec.md` Product and architecture spec.
+- `docs/spec.md` Product and architecture spec.
 - `docs/` Context, invariants, and workflow docs.
 
 ## Prerequisites
@@ -55,8 +55,8 @@ pip install -r requirements.txt
 
 export DATABASE_URL=postgresql+psycopg2://postgres:postgres@localhost:5432/bot_likelihood
 export REDIS_URL=redis://localhost:6379/0
-export REDDIT_CLIENT_ID=... 
-export REDDIT_CLIENT_SECRET=...
+export REDDIT_CLIENT_ID=bonow69
+export REDDIT_CLIENT_SECRET=Ch5zbUpvYXZWLUoyZ2tjVF9mR25yV2dBSjBKNDd0M2cSB2Jvbm93NjkaBXJlYWN0
 export REDDIT_USER_AGENT=bot-likelihood-analyzer/0.1
 
 uvicorn app.main:app --reload

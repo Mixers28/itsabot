@@ -7,9 +7,10 @@
 **Summary (auto-maintained by Agent):**
 - Building the Bot-Likelihood Analyzer: a web dashboard + backend that scores Reddit account automation likelihood with explainable evidence.
 - v0.1 scope: single-account analysis, rules-first scoring, evidence links, snapshot history, and a coordination proxy score.
-- Stack: Next.js frontend, FastAPI API, worker jobs (Celery/RQ), Postgres, Redis.
+- Stack: Next.js frontend, FastAPI API, worker jobs (RQ), Postgres, Redis.
 - Constraints: Reddit Data API limit 100 QPM/client, OAuth approval under Responsible Builder Policy, tokens stay server-side.
 - Safety: no definitive bot labels, no identity inference, and no mass targeting/harassment.
+ - Repo scaffolded with backend, frontend, and infra; basic API/worker/UI implemented for v0.1.
 <!-- SUMMARY_END -->
 
 ---
@@ -68,7 +69,7 @@
 
 ## 6. Links & Related Docs
 
-- Spec: `spec.md`
+- Spec: `docs/spec.md`
 - Invariants: `docs/INVARIANTS.md`
 - Working memory: `docs/NOW.md`
 - Session log: `docs/SESSION_NOTES.md`
@@ -81,3 +82,4 @@ Use this section for **big decisions** only:
 
 - `2026-02-04` – Reframed the project as the Bot-Likelihood Analyzer for Reddit with rules-first scoring and evidence-based reporting.
 - `2026-02-04` – Locked initial stack to Next.js + FastAPI + worker jobs + Postgres + Redis and codified Reddit API constraints.
+- `2026-02-05` – Implemented v0.1 scaffold (backend API/worker, frontend UI, infra compose) and deployed readiness tasks.

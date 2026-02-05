@@ -29,7 +29,7 @@ write back durable memory in Markdown.
 ### Handoffkit CLI
 - Generates role prompts with context packs.
 - Prints start/end session prompts and supports commit + push.
-- Uses repo role prompts in `.github/agents/*.agent.md` when present.
+- Uses role prompts in `handoffkit/templates/*.md` (e.g., `coder.md`, `architect.md`).
 
 ## Primary Workflows
 1) Optional: run `handoffkit preflight` to validate required files.

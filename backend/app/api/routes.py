@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from datetime import datetime, timedelta
+import logging
 from typing import Optional
 
 from fastapi import APIRouter, HTTPException
@@ -19,6 +20,7 @@ from app.workers.queue import get_queue
 
 
 router = APIRouter(prefix="/api", tags=["api"])
+logger = logging.getLogger("api")
 
 
 def _get_latest_snapshot(account_id: int) -> Optional[Snapshot]:
@@ -76,6 +78,7 @@ def analyze_reddit(request: AnalyzeRequest):
 
     queue = get_queue()
     job = queue.enqueue(analyze_reddit_user, username)
+    logger.info("job_enqueue username=%s job_id=%s", username, job.id)
     return AnalyzeResponse(job_id=job.id, status="queued")
 
 
@@ -95,6 +98,8 @@ def job_status(job_id: str):
         raise HTTPException(status_code=404, detail="Job not found")
 
     status = job.get_status()
+    progress = job.meta.get("progress") if isinstance(job.meta, dict) else None
+    logger.info("job_status job_id=%s status=%s progress=%s", job_id, status, progress)
     result_url = None
     result = job.return_value() if hasattr(job, "return_value") else job.result
     if status == "finished" and isinstance(result, dict):
@@ -102,7 +107,7 @@ def job_status(job_id: str):
         if snapshot_id:
             result_url = f"/api/report/reddit/{result.get('username')}?snapshot={snapshot_id}"
 
-    return JobStatusResponse(job_id=job_id, status=status, result_url=result_url)
+    return JobStatusResponse(job_id=job_id, status=status, result_url=result_url, progress=progress)
 
 
 @router.get("/report/reddit/{username}", response_model=ReportResponse)

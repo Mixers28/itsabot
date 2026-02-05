@@ -7,13 +7,7 @@ local-mcp-context-kit/
 │   ├── AGENT_SESSION_PROTOCOL.md
 │   ├── MCP_LOCAL_DESIGN.md
 │   ├── PERSISTENT_AGENT_WORKFLOW.md
-├── .github/
-│   ├── agents/
-│   │   ├── architect.agent.md
-│   │   ├── coder.agent.md
-│   │   ├── polish.agent.md
-│   │   ├── qa.agent.md
-│   │   ├── reviewer.agent.md
+│   ├── spec.md
 ├── handoffkit/
 │   ├── __init__.py
 │   ├── __main__.py
@@ -28,7 +22,6 @@ local-mcp-context-kit/
 │   ├── tasks.json
 ├── README.md
 ├── REPO_README.md
-├── SPEC.md
 ├── handoffkit.config.json
 ├── pyproject.toml
 ├── .gitignore

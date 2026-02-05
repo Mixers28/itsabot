@@ -387,7 +387,7 @@ bot-likelihood-dashboard/
     components/
   infra/
     docker-compose.yml
-  spec.md
+  docs/spec.md
   README.md
 
 12) Sprint plan (tight, shippable)
@@ -418,6 +418,20 @@ Search/report/history pages
 Force refresh + cached results
 
 Export report as JSON
+
+Backlog — Observability & Diagnostics
+
+Add logging configuration in main.py (stdout, INFO).
+
+Log job enqueue in routes.py with job.id and username.
+
+Log job status polling in job_status.
+
+Wrap analyze_reddit_user in try/except and log exceptions + timing in jobs.py.
+
+Add optional job.meta["progress"] updates and return them in /api/jobs/{job_id}.
+
+In index.js, surface job_id and log status changes.
 
 13) Roadmap to X then Facebook (design now, implement later)
 

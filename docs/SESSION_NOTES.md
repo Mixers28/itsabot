@@ -5,9 +5,9 @@
 
 <!-- SUMMARY_START -->
 **Latest Summary (auto-maintained by Agent):**
-- Rehydrated context from `spec.md` into PROJECT_CONTEXT/NOW/INVARIANTS for the Bot-Likelihood Analyzer.
-- Updated SESSION_NOTES to reflect the new scope and constraints.
-- Next step is starting v0.1 implementation (collector, schema, scoring, API, UI).
+- Implemented observability updates (API/worker logging, job progress, UI job ID/status).
+- Updated handoffkit role resolution to use `handoffkit/templates` and aligned docs.
+- Added observability backlog items to `docs/spec.md` and refocused NOW on deployment validation.
 <!-- SUMMARY_END -->
 
 ---
@@ -51,6 +51,58 @@
 
 ## Session Template (Copy/Paste for each new session)
 ## Recent Sessions (last 3-5)
+
+### 2026-02-05 (Session 2)
+
+**Participants:** User, Codex Agent  
+**Branch:** main  
+
+### What we worked on
+- Updated handoffkit to resolve role prompts from `handoffkit/templates/*.md`.
+- Aligned docs (`Repo_Structure`, workflow) and added observability backlog items to `spec.md`.
+- Implemented API/worker logging, job progress metadata, and UI job ID/status surfacing.
+- Updated NOW to focus on deploying and validating the observability changes.
+
+### Files touched
+- handoffkit/__main__.py
+- docs/Repo_Structure.md
+- docs/PERSISTENT_AGENT_WORKFLOW.md
+- spec.md
+- backend/app/main.py
+- backend/app/api/routes.py
+- backend/app/workers/jobs.py
+- frontend/pages/index.js
+- docs/NOW.md
+- docs/SESSION_NOTES.md
+
+### Outcomes / Decisions
+- Handoffkit now uses `handoffkit/templates` for agent prompts.
+- Observability improvements are in place to debug stuck jobs in deployment.
+
+### 2026-02-05
+
+**Participants:** User, Codex Agent  
+**Branch:** main  
+
+### What we worked on
+- Implemented backend collector, features, scoring, API routes, and worker jobs.
+- Built minimal Next.js UI and infra compose; wrote README.
+- Fixed report cache key syntax error and updated Next.js version; added lockfile and gitignore.
+- Guided Railway deployment setup and triaged frontend security gate.
+
+### Files touched
+- backend/app/*
+- frontend/*
+- infra/docker-compose.yml
+- README.md
+- docs/PROJECT_CONTEXT.md
+- docs/NOW.md
+- docs/SESSION_NOTES.md
+- .gitignore
+
+### Outcomes / Decisions
+- v0.1 scaffold is in place across backend, worker, and frontend.
+- Deployment workflow is active; remaining work is Railway config and runtime validation.
 
 ### 2026-02-04 (Session 2)
 

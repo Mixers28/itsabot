@@ -8,28 +8,42 @@ const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8000'
 export default function Home() {
   const [username, setUsername] = useState('');
   const [status, setStatus] = useState(null);
+  const [jobId, setJobId] = useState(null);
   const [report, setReport] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [lastStatus, setLastStatus] = useState(null);
+
+  const updateStatus = (nextStatus) => {
+    setStatus(nextStatus);
+    if (nextStatus !== lastStatus) {
+      console.info(`job_status ${nextStatus}`);
+      setLastStatus(nextStatus);
+    }
+  };
 
   const analyze = async () => {
     setLoading(true);
     setReport(null);
-    setStatus('queued');
+    updateStatus('queued');
     const res = await fetch(`${API_BASE}/api/analyze/reddit`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ username }),
     });
     const data = await res.json();
+    setJobId(data.job_id || null);
     if (data.status === 'cached' && data.report_url) {
       const reportRes = await fetch(`${API_BASE}${data.report_url}`);
       const reportJson = await reportRes.json();
       setReport(reportJson);
-      setStatus('cached');
+      updateStatus('cached');
       setLoading(false);
       return;
     }
     const jobId = data.job_id;
+    if (jobId) {
+      console.info(`job_id ${jobId}`);
+    }
     let attempts = 0;
     const poll = async () => {
       attempts += 1;
@@ -39,14 +53,15 @@ export default function Home() {
         const reportRes = await fetch(`${API_BASE}${statusJson.result_url}`);
         const reportJson = await reportRes.json();
         setReport(reportJson);
-        setStatus('finished');
+        updateStatus('finished');
         setLoading(false);
         return;
       }
       if (attempts < 20) {
+        updateStatus(statusJson.status);
         setTimeout(poll, 3000);
       } else {
-        setStatus('timeout');
+        updateStatus('timeout');
         setLoading(false);
       }
     };
@@ -72,6 +87,7 @@ export default function Home() {
           {loading ? 'Analyzing…' : 'Analyze'}
         </button>
         {status && <p>Status: {status}</p>}
+        {jobId && <p>Job ID: {jobId}</p>}
       </div>
 
       {report && (

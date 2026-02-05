@@ -13,7 +13,7 @@ Define how a human and a local code agent coordinate using this repo’s memory 
 - Design notes: `docs/MCP_LOCAL_DESIGN.md`
 
 ## Canonical Artifact
-- `SPEC.md` is the source of truth for implementation.
+- `docs/spec.md` is the source of truth for implementation.
 - Architect creates/updates it; everyone else must follow it.
 
 ## Handoff Loop
@@ -22,11 +22,11 @@ Architect -> Coder -> Reviewer <-> Coder (until pass) -> QA -> Polish
 ## Hard Anti-Drift Rules
 Every handoff prompt must include:
 - Invariants (non-negotiables)
-- SPEC.md (full or excerpt)
+- docs/spec.md (full or excerpt)
 - Only relevant code snippets/diff
 
 Reviewer rule:
-- Reviewer must not redesign; only evaluate against SPEC.md, best practices, and current docs (Context7).
+- Reviewer must not redesign; only evaluate against docs/spec.md, best practices, and current docs (Context7).
 
 ## Start Session (Context Hydration)
 Preferred: VS Code task `Start Session (Agent - Coder)` (or pick another role; see `.vscode/tasks.json`).

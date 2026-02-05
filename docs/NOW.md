@@ -5,16 +5,16 @@
 
 <!-- SUMMARY_START -->
 **Current Focus (auto-maintained by Agent):**
-- Stand up the v0.1 Reddit analysis pipeline: collect, score, and report a single account.
-- Implement core storage and rate-limited collection with worker jobs.
-- Deliver a minimal UI that shows score, reasons, evidence, history, and a coordination proxy.
+- Deploy the updated observability build (API + worker + frontend) and validate end-to-end.
+- Verify Railway service settings for API/worker and frontend deployment path.
+- Use new job logs/progress to debug stuck “queued” requests.
 <!-- SUMMARY_END -->
 
 ---
 
 ## Current Objective
 
-Ship a v0.1 end-to-end Reddit account analyzer with explainable scoring and history.
+Deploy and validate the v0.1 end-to-end Reddit account analyzer with logging and job progress.
 
 ---
 
@@ -26,21 +26,25 @@ Ship a v0.1 end-to-end Reddit account analyzer with explainable scoring and hist
 
 ## What We Are Working On Right Now
 
-- [ ] Scaffold repo layout for `backend/`, `frontend/`, and `infra/` per spec.
-- [ ] Implement Reddit collector (posts/comments/profile) with local rate limiter + cache.
-- [ ] Define Postgres schema + migrations for accounts, snapshots, items, features, scores.
-- [ ] Build feature extraction (timing, repetition, content shape) with coverage flags.
-- [ ] Implement rules-based scoring + reasons/evidence generation (automation + coordination proxy).
-- [ ] Build API endpoints (`/api/analyze`, `/api/jobs`, `/api/report`, `/api/history`).
-- [ ] Minimal UI pages: Search, Report, History.
+- [x] Scaffold repo layout for `backend/`, `frontend/`, and `infra/` per spec.
+- [x] Implement Reddit collector (posts/comments/profile) with local rate limiter + cache.
+- [x] Define Postgres schema for accounts, snapshots, items, features, scores.
+- [x] Build feature extraction (timing, repetition, content shape) with coverage flags.
+- [x] Implement rules-based scoring + reasons/evidence generation (automation + coordination proxy).
+- [x] Build API endpoints (`/api/analyze`, `/api/jobs`, `/api/report`, `/api/history`).
+- [x] Minimal UI pages: Search, Report, History.
+- [ ] Configure Railway services for API, worker, and frontend with env vars.
+- [ ] Deploy updated logging/progress changes to Railway.
+- [ ] Validate API startup, worker processing, and frontend data flow in deployment.
+- [ ] Confirm job status transitions (queued → started → finished) and report rendering.
 
 ---
 
 ## Next Small Deliverables
 
-- Database schema + migration script for v0.1 tables.
-- Working collector with cached responses and rate-limit compliance.
-- First end-to-end JSON report for a test account.
+- Railway deployment green for API + worker + frontend.
+- First end-to-end JSON report in prod/staging with cached results.
+- Credentials health endpoint returns OK.
 
 ---
 

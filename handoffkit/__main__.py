@@ -151,7 +151,7 @@ def load_config(project_root: Path, tool_root: Path, config_path: Optional[str])
         "session_notes_tail_lines": 80,
         "protocol_file": "docs/AGENT_SESSION_PROTOCOL.md",
         "protocol_tail_lines": 120,
-        "spec_file": "SPEC.md",
+        "spec_file": "docs/spec.md",
         "invariants_file": "docs/INVARIANTS.md",
         "require_spec": False,
         "require_invariants": False,
@@ -160,7 +160,7 @@ def load_config(project_root: Path, tool_root: Path, config_path: Optional[str])
     }
 
 def load_role_prompt(project_root: Path, tool_root: Path, role: str) -> Tuple[str, Optional[Path]]:
-    """Load role prompt from repo agents if present, else from kit templates."""
+    """Load role prompt from kit templates."""
     role = role.lower()
     slug_candidates = [role]
     if role == "qa_tester":
@@ -169,10 +169,9 @@ def load_role_prompt(project_root: Path, tool_root: Path, role: str) -> Tuple[st
         slug_candidates = ["qa", "qa_tester"]
 
     for slug in slug_candidates:
-        repo_agent_path = project_root / ".github" / "agents" / f"{slug}.agent.md"
-        if repo_agent_path.exists():
-            content = strip_frontmatter(read_text(repo_agent_path)).strip()
-            return content, repo_agent_path
+        template_path = tool_root / "templates" / f"{slug}.md"
+        if template_path.exists():
+            return read_text(template_path).strip(), None
 
     template_path = tool_root / "templates" / f"{role}.md"
     if not template_path.exists():
@@ -228,7 +227,7 @@ def build_context_pack(
     # priority: higher = keep more
     sections.append(("Instruction", instruction.strip(), 100))
     if spec_content:
-        sections.append((spec_title or "SPEC.md", spec_content.strip(), 95))
+        sections.append((spec_title or "docs/spec.md", spec_content.strip(), 95))
     if invariants_content:
         sections.append((invariants_title or "Invariants", invariants_content.strip(), 95))
     if selection:
@@ -360,7 +359,7 @@ def build_context_pack(
     if invariants_content:
         render_order.append(invariants_title or "Invariants")
     if spec_content:
-        render_order.append(spec_title or "SPEC.md")
+        render_order.append(spec_title or "docs/spec.md")
     render_order.extend(["docs/NOW.md", "docs/PROJECT_CONTEXT.md", "Recent SESSION_NOTES", "AGENT_SESSION_PROTOCOL", "Selection", "Diff"])
     # Map titles
     rendered = []
@@ -458,7 +457,7 @@ def preflight_report(project_root: Path, cfg: Dict) -> int:
     require_invariants = bool(cfg.get("require_invariants", False))
 
     if auto_spec or require_spec:
-        check_file("SPEC.md", cfg.get("spec_file"), required=require_spec)
+        check_file("docs/spec.md", cfg.get("spec_file"), required=require_spec)
     if auto_invariants or require_invariants:
         check_file("Invariants", cfg.get("invariants_file"), required=require_invariants)
 
@@ -477,8 +476,13 @@ def current_branch(project_root: Path) -> str:
         return ""
 
 def print_session_start(project_root: Path, agent_role: str, open_docs: bool) -> None:
-    agent_role_slug = agent_role.lower()
-    agent_role_file = f".github/agents/{agent_role_slug}.agent.md"
+    role_slug = agent_role.lower().replace(" ", "_")
+    role_map = {
+        "qa": "qa_tester",
+        "qa_tester": "qa_tester",
+    }
+    template_slug = role_map.get(role_slug, role_slug)
+    agent_role_file = f"handoffkit/templates/{template_slug}.md"
 
     print("Local MCP – Start Session")
     print("")
@@ -615,9 +619,9 @@ def parse_args(argv: Optional[List[str]] = None):
     role_parser.add_argument("--config", default=None, help="Path to config JSON (optional). If omitted, auto-discovered.")
     role_parser.add_argument("--selection-file", default=None, help="Path to a file containing your selected snippet (optional)")
     role_parser.add_argument("--diff", default=None, help="Path to a diff file, or '-' to read diff from stdin (optional)")
-    role_parser.add_argument("--spec", default=None, help="Path to SPEC.md (optional; overrides config)")
+    role_parser.add_argument("--spec", default=None, help="Path to docs/spec.md (optional; overrides config)")
     role_parser.add_argument("--invariants", default=None, help="Path to invariants file (optional; overrides config)")
-    role_parser.add_argument("--no-spec", action="store_true", help="Do not include SPEC.md in the handoff pack")
+    role_parser.add_argument("--no-spec", action="store_true", help="Do not include docs/spec.md in the handoff pack")
     role_parser.add_argument("--no-invariants", action="store_true", help="Do not include invariants in the handoff pack")
 
     session_parser = subparsers.add_parser("session", help="Start or end a session")
@@ -687,7 +691,7 @@ def main():
         print("\nTip: generate a diff file with `git diff > patch.diff` and pass `--diff patch.diff`, or use `--diff -` to pipe stdin.", file=sys.stderr)
         sys.exit(2)
 
-    spec_path = args.spec if args.spec is not None else cfg.get("spec_file", "SPEC.md")
+    spec_path = args.spec if args.spec is not None else cfg.get("spec_file", "docs/spec.md")
     invariants_path = args.invariants if args.invariants is not None else cfg.get("invariants_file", "docs/INVARIANTS.md")
 
     auto_include_spec = bool(cfg.get("auto_include_spec", True))
@@ -697,7 +701,7 @@ def main():
 
     if args.no_spec:
         if require_spec:
-            print("SPEC.md is required by config; --no-spec is not allowed.", file=sys.stderr)
+            print("docs/spec.md is required by config; --no-spec is not allowed.", file=sys.stderr)
             sys.exit(2)
         auto_include_spec = False
     if args.no_invariants:
@@ -711,7 +715,7 @@ def main():
         spec_title = None
         if auto_include_spec:
             spec_content, spec_resolved = read_artifact_file(
-                spec_path, project_root=project_root, label="SPEC.md", required=require_spec
+                spec_path, project_root=project_root, label="docs/spec.md", required=require_spec
             )
             if spec_content and spec_resolved:
                 try:
