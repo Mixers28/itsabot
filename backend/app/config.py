@@ -16,6 +16,7 @@ class Settings:
     collector_version: str = os.getenv("COLLECTOR_VERSION", "v0.1")
     cache_hours: int = int(os.getenv("CACHE_HOURS", "6"))
     rate_limit_qpm: int = int(os.getenv("REDDIT_QPM_LIMIT", "100"))
+    cors_allow_origins: str = os.getenv("CORS_ALLOW_ORIGINS", "*")
 
 
 settings = Settings()
